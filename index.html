@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MindScope · Organized Learning</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="map-wrapper">
+            <div class="zoom-controls">
+                <button class="zoom-btn" id="zoomOutBtn" title="Zoom Out">−</button>
+                <button class="zoom-btn" id="zoomInBtn" title="Zoom In">+</button>
+                <button class="zoom-btn zoom-reset" id="zoomResetBtn" title="Reset Zoom (100%)">100%</button>
+                <button class="zoom-btn zoom-fit" id="zoomFitBtn" title="Fit to Container">Fit to Box</button>
+                <button class="zoom-btn btn-add-field" id="addFieldBtn" title="Add Field">➕ Field</button>
+                <button class="zoom-btn btn-add-subfield" id="addSubfieldBtn" title="Add Subfield">📂 Subfield</button>
+                <button class="zoom-btn btn-add-nested" id="addNestedSubfieldBtn" title="Add Nested Subfield">🔽 Nested</button>
+                <button class="zoom-btn btn-export" id="exportExcelBtn" title="Export Data">📊 Export</button>
+                <button class="zoom-btn btn-import" id="importDataBtn" title="Import Data">📁 Import</button>
+            </div>
+            <div class="map-scroll-container" id="mapScrollContainer">
+                <div class="map-inner" id="mapInner">
+                    <div class="vertical-fields" id="metroMap"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Field Modal -->
+    <div id="addFieldModal" class="modal">
+        <div class="modal-content">
+            <h3>➕ Add New Field</h3>
+            <div class="form-group">
+                <label>Field Name</label>
+                <input type="text" id="fieldName" placeholder="e.g., Business, Design, Technology">
+            </div>
+            <div class="form-group">
+                <label>Icon (emoji)</label>
+                <select id="fieldIcon">
+                    <option value="📁">📁 Folder</option>
+                    <option value="💼">💼 Business</option>
+                    <option value="💻">💻 Technology</option>
+                    <option value="🎨">🎨 Design</option>
+                    <option value="🎵">🎵 Music</option>
+                    <option value="🧠">🧠 Brain</option>
+                    <option value="📚">📚 Learning</option>
+                    <option value="⚡">⚡ Energy</option>
+                    <option value="🌟">🌟 Star</option>
+                    <option value="🎯">🎯 Target</option>
+                    <option value="🏗️">🏗️ Infrastructure</option>
+                    <option value="🔧">🔧 Tools</option>
+                    <option value="🎸">🎸 Guitar</option>
+                    <option value="☁️">☁️ Cloud</option>
+                    <option value="🔒">🔒 Security</option>
+                    <option value="🌐">🌐 Network</option>
+                    <option value="📢">📢 Marketing</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Color (hex)</label>
+                <input type="color" id="fieldColor" value="#219ebc">
+            </div>
+            <div class="modal-buttons">
+                <button onclick="closeModal('addFieldModal')">Cancel</button>
+                <button onclick="addField()">Add Field</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subfield Modal -->
+    <div id="addSubfieldModal" class="modal">
+        <div class="modal-content">
+            <h3>📂 Add New Subfield</h3>
+            <div class="form-group">
+                <label>Select Field</label>
+                <select id="subfieldFieldName"></select>
+            </div>
+            <div class="form-group">
+                <label>Subfield Name</label>
+                <input type="text" id="subfieldName" placeholder="e.g., Frontend, Backend, SEO">
+            </div>
+            <div class="form-group">
+                <label>Icon (emoji)</label>
+                <select id="subfieldIcon">
+                    <option value="📌">📌 Pin</option>
+                    <option value="🌐">🌐 Network</option>
+                    <option value="🔧">🔧 Tools</option>
+                    <option value="⚙️">⚙️ Backend</option>
+                    <option value="🎨">🎨 Frontend</option>
+                    <option value="🔍">🔍 SEO</option>
+                    <option value="📱">📱 Mobile</option>
+                    <option value="🎸">🎸 Guitar</option>
+                    <option value="🎼">🎼 Theory</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="closeModal('addSubfieldModal')">Cancel</button>
+                <button onclick="addSubfield()">Add Subfield</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Nested Subfield Modal -->
+    <div id="addNestedSubfieldModal" class="modal">
+        <div class="modal-content">
+            <h3>🔽 Add Nested Subfield</h3>
+            <div class="form-group">
+                <label>Select Field</label>
+                <select id="nestedFieldName"></select>
+            </div>
+            <div class="form-group">
+                <label>Select Parent Subfield</label>
+                <select id="parentSubfieldPath"></select>
+            </div>
+            <div class="form-group">
+                <label>New Subfield Name</label>
+                <input type="text" id="nestedSubfieldName" placeholder="e.g., Advanced, Basics">
+            </div>
+            <div class="form-group">
+                <label>Icon (emoji)</label>
+                <select id="nestedSubfieldIcon">
+                    <option value="📌">📌 Pin</option>
+                    <option value="📁">📁 Folder</option>
+                    <option value="⭐">⭐ Star</option>
+                    <option value="🎯">🎯 Target</option>
+                    <option value="💡">💡 Idea</option>
+                    <option value="🔧">🔧 Tools</option>
+                    <option value="⚙️">⚙️ Settings</option>
+                    <option value="🎨">🎨 Design</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="closeModal('addNestedSubfieldModal')">Cancel</button>
+                <button onclick="addNestedSubfield()">Add Nested Subfield</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <h3>➕ Add New Task</h3>
+            <div class="form-group">
+                <label>Task Name</label>
+                <input type="text" id="taskName" placeholder="e.g., Learn Docker, Study Harmony">
+            </div>
+            <div class="form-group">
+                <label>Icon (emoji)</label>
+                <select id="taskIcon">
+                    <option value="📌">📌 Task</option>
+                    <option value="⭐">⭐ Important</option>
+                    <option value="🎯">🎯 Goal</option>
+                    <option value="✅">✅ Check</option>
+                    <option value="🔧">🔧 Work</option>
+                    <option value="📚">📚 Study</option>
+                    <option value="💻">💻 Code</option>
+                    <option value="🎵">🎵 Music</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="closeModal('taskModal')">Cancel</button>
+                <button onclick="addTask()">Add Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step Details Modal -->
+    <div id="stepModal" class="modal">
+        <div class="modal-content">
+            <h3 id="stepModalTitle">📝 Step Details</h3>
+            <div class="form-group">
+                <label>State</label>
+                <select id="stepState">
+                    <option value="new">🟢 New</option>
+                    <option value="in_progress">🟡 In Progress</option>
+                    <option value="pending">🟠 Pending</option>
+                    <option value="completed">✅ Completed</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Note</label>
+                <textarea id="stepNote" rows="4" placeholder="Add your notes here..."></textarea>
+            </div>
+            <div id="stepDatesContainer" style="font-size: 0.7rem; color: var(--text-muted); background: var(--bg-secondary); padding: 0.5rem; border-radius: 0.5rem; margin-top: 0.5rem;"></div>
+            <div class="modal-buttons">
+                <button class="btn-delete" onclick="deleteCurrentStep()">🗑️ Delete</button>
+                <button onclick="closeModal('stepModal')">Cancel</button>
+                <button onclick="saveStepDetails()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Field Modal -->
+    <div id="deleteFieldModal" class="modal">
+        <div class="modal-content">
+            <h3>🗑️ Delete Field</h3>
+            <p>Are you sure you want to delete the field "<span id="deleteFieldName"></span>"?</p>
+            <p style="font-size: 0.8rem; color: #ef4444; margin-top: 0.5rem;">This will also delete all subfields and tasks inside it. This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button onclick="closeModal('deleteFieldModal')">Cancel</button>
+                <button class="btn-delete" onclick="confirmDeleteField()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Subfield Modal -->
+    <div id="deleteSubfieldModal" class="modal">
+        <div class="modal-content">
+            <h3>🗑️ Delete Subfield</h3>
+            <p>Are you sure you want to delete the subfield "<span id="deleteSubfieldName"></span>"?</p>
+            <p style="font-size: 0.8rem; color: #ef4444; margin-top: 0.5rem;">This will also delete all tasks inside it. This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button onclick="closeModal('deleteSubfieldModal')">Cancel</button>
+                <button class="btn-delete" onclick="confirmDeleteSubfield()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Create a global gitignore
+git config --global core.excludesfile ~/.gitignore_global
+
+# Add common patterns to it
+echo "node_modules/" >> ~/.gitignore_global
+echo ".DS_Store" >> ~/.gitignore_global
+echo "Thumbs.db" >> ~/.gitignore_global
