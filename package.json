@@ -1,0 +1,64 @@
+{
+  "name": "mindscope",
+  "version": "1.0.0",
+  "description": "Organize your learning journey across all areas of life - fields, subfields, and sequential steps",
+  "main": "main.js",
+  "private": true,
+  "author": {
+    "name": "MetalHeadPhoenix",
+    "email": "metalheadphoenix@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MetalHeadPhoenix/MindScope.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build:win": "npx electron-builder --win --x64 --publish never",
+    "build:linux": "npx electron-builder --linux --x64 --publish never",
+    "build:mac": "npx electron-builder --mac --x64 --arm64 --publish never",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.metalheadphoenix.mindscope",
+    "productName": "MindScope",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "styles.css"
+    ],
+    "win": {
+      "target": "nsis",
+      "artifactName": "MindScope-Setup-${version}.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "linux": {
+      "target": ["deb", "rpm"],
+      "artifactName": "mindscope-${version}-${arch}.${ext}",
+      "category": "Office",
+      "maintainer": "MetalHeadPhoenix <metalheadphoenix@users.noreply.github.com>"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.productivity",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    }
+  }
+}
